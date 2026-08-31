@@ -93,8 +93,11 @@ legend{font-size:11.5px;color:var(--tenue);padding:0 5px}
 .rango button[aria-pressed="true"]{background:var(--sel);border-color:var(--sel);color:#fff}
 
 /* ---------- Distribución de la ventana ---------- */
-.cuerpo{display:grid;grid-template-columns:1fr;gap:10px}
-@media(min-width:820px){ .cuerpo{grid-template-columns:1fr 260px} }
+.cuerpo{display:flex;flex-direction:column;gap:10px}
+.cuerpo>fieldset{min-width:0}
+@media(min-width:820px){
+  .cuerpo{display:grid;grid-template-columns:1fr 260px;align-items:start}
+}
 
 /* ---------- Caja de resultados ----------
    En el teléfono crece libre y la página lleva un solo scroll.
@@ -170,6 +173,9 @@ th{color:var(--tenue);font-weight:600;font-size:11px;position:sticky;top:0;backg
   .btn{padding:9px 6px}
   .fc select{padding:6px 1px;font-size:14px}
   .menu a{padding:8px}               /* más fácil de tocar con el dedo */
+  /* nada debe recortar el alto de los resultados */
+  .caja{height:auto!important;max-height:none!important;overflow:visible!important}
+  .cuerpo>fieldset{overflow:visible}
 }
 
 /* ---------- Formularios de datos ---------- */
@@ -220,7 +226,7 @@ select.campo:focus{outline:2px solid var(--sel);outline-offset:-1px}
 </head>
 <body>
 
-<div class="titulo">Tinka · Análisis de sorteos <span class="n" id="hdr">—</span></div>
+<div class="titulo">Tinka <span style="opacity:.7;font-size:11px;font-weight:400">v3</span> · Análisis de sorteos <span class="n" id="hdr">—</span></div>
 
 <div class="ventana">
 
