@@ -96,14 +96,18 @@ legend{font-size:11.5px;color:var(--tenue);padding:0 5px}
 .cuerpo{display:grid;grid-template-columns:1fr;gap:10px}
 @media(min-width:820px){ .cuerpo{grid-template-columns:1fr 260px} }
 
-/* ---------- Caja de resultados ---------- */
+/* ---------- Caja de resultados ----------
+   En el teléfono crece libre y la página lleva un solo scroll.
+   En pantalla grande sí se fija, para que el menú quede siempre a la vista. */
 .caja{
   background:var(--caja);border:1px solid var(--linea);border-radius:6px;
-  height:56vh;min-height:330px;overflow:auto;padding:8px 4px 8px 8px;
+  height:auto;overflow:visible;padding:8px 8px 10px;
   font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums;
-  overscroll-behavior:contain;
 }
-@media(min-width:820px){ .caja{height:62vh} }
+@media(min-width:820px){
+  .caja{height:62vh;min-height:330px;overflow:auto;padding:8px 4px 8px 8px;
+    overscroll-behavior:contain}
+}
 .caja::-webkit-scrollbar{width:10px}
 .caja::-webkit-scrollbar-thumb{background:var(--linea);border-radius:5px}
 
@@ -160,6 +164,12 @@ th{color:var(--tenue);font-weight:600;font-size:11px;position:sticky;top:0;backg
 @media(max-width:819px){
   .menutog{display:block;margin-bottom:8px}
   .menu.oculto{display:none}
+  .menu{order:-1}                    /* el menú se abre encima de los resultados */
+  .ventana{padding:8px}
+  fieldset{padding:7px 8px 8px;margin-bottom:8px}
+  .btn{padding:9px 6px}
+  .fc select{padding:6px 1px;font-size:14px}
+  .menu a{padding:8px}               /* más fácil de tocar con el dedo */
 }
 
 /* ---------- Formularios de datos ---------- */
@@ -1013,7 +1023,7 @@ function pintar(){
   const ls=lista();
   $('#hdr').textContent = DRAWS.length ? `${ls.length} de ${DRAWS.length} sorteos` : 'sin datos';
   $('#caja').innerHTML = (A[VISTA]||A.mapafrec)(ls);
-  $('#caja').scrollTop = 0;
+  if(window.innerWidth>=820) $('#caja').scrollTop = 0;
   $$('#menu a').forEach(a=> a.setAttribute('aria-current', a.dataset.a===VISTA));
   $$('#rango button[data-n]').forEach(b=>
     b.setAttribute('aria-pressed', !RANGO.desde && !RANGO.hasta && +b.dataset.n===RANGO.n));
@@ -1097,8 +1107,10 @@ $('#bLimpiar').onclick=()=>{ FC=[null,null,null,null,null,null]; pintarFC(); pin
 
 $$('#menu a').forEach(a=> a.onclick=()=>{
   VISTA=a.dataset.a;
-  if(window.innerWidth<820) $('#menu').classList.add('oculto');
+  const movil = window.innerWidth<820;
+  if(movil) $('#menu').classList.add('oculto');
   pintar();
+  if(movil) $('#caja').scrollIntoView({block:'start'});
 });
 $('#bMenu').onclick=()=> $('#menu').classList.toggle('oculto');
 

@@ -3,7 +3,7 @@
    Si algún día editas index.html, sube el número de VERSION
    para que el teléfono se dé cuenta y descargue la versión nueva. */
 
-const VERSION = 'tinka-v1';
+const VERSION = 'tinka-v2';
 const ARCHIVOS = [
   './',
   './index.html',
